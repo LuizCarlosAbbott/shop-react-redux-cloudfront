@@ -19,7 +19,7 @@ custom:
   client:
     bucketName: epam-react-shop-serveless
     distributionFolder: build
-    region: eu-east-1
+    region: us-east-1
   s3BucketName: ${self:custom.client.bucketName}
 
   ## Serverless-single-page-app-plugin configuration:
