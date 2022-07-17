@@ -1,12 +1,13 @@
-service: node-in-aws-web
+service: epam-react-shop
 
-frameworkVersion: '2'
+frameworkVersion: '3'
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   # setup profile for AWS CLI.
-  # profile: node-aws
+  profile: default
+  region: us-east-1
 
 plugins:
   - serverless-finch
@@ -17,7 +18,7 @@ plugins:
 
 custom:
   client:
-    bucketName: node-in-aws-web-bucket
+    bucketName: epam-react-shop-serveless
     distributionFolder: build
   s3BucketName: ${self:custom.client.bucketName}
 

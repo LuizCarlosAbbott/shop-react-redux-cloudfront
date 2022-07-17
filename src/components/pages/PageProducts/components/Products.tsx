@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,6 +12,7 @@ import AddProductToCart from "components/AddProductToCart/AddProductToCart";
 // import axios from 'axios';
 // import API_PATHS from "constants/apiPaths";
 import productList from "./productList.json";
+import Pagination from './Pagination';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -33,22 +34,31 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Products() {
   const classes = useStyles();
+  const PageSize = 6;
   const [products, setProducts] = useState<Product[]>([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  
   useEffect(() => {
     // axios.get(`${API_PATHS.bff}/product/available/`)
     //   .then(res => setProducts(res.data));
     setProducts(productList);
   }, [])
 
+  const currentProductsOnPage = useMemo(() => {
+    const firstPageIndex = (currentPage - 1) * PageSize;
+    const lastPageIndex = firstPageIndex + PageSize;
+    return products.slice(firstPageIndex, lastPageIndex);
+  }, [currentPage, products]);
+
   return (
-    <Grid container spacing={4}>
-      {products.map((product: Product, index: number) => (
+    <>
+    <Grid container spacing={4} >
+      {currentProductsOnPage.map((product: Product, index: number) => (
         <Grid item key={product.id} xs={12} sm={6} md={4}>
           <Card className={classes.card}>
             <CardMedia
               className={classes.cardMedia}
-              image={`https://source.unsplash.com/random?sig=${index}`}
+              image={`https://source.unsplash.com/random?sig=${((currentPage - 1) * PageSize) + index}`}
               title="Image title"
             />
             <CardContent className={classes.cardContent}>
@@ -66,5 +76,13 @@ export default function Products() {
         </Grid>
       ))}
     </Grid>
+      <Pagination
+        className="pagination-bar"
+        currentPage={currentPage}
+        totalCount={products.length}
+        pageSize={PageSize}
+        onPageChange={async (page) => setCurrentPage(page)}
+      />
+      </>
   );
 }
