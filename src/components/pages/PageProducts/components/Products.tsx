@@ -38,7 +38,7 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   
   useEffect(() => {
-    axios.get(`${API_PATHS.bff}/getProductsList/`)
+    axios.get(`${API_PATHS.product}`)
       .then(res => setProducts(res.data.products));
   }, [])
 
