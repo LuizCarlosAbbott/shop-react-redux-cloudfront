@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
 import axios from 'axios';
+import React, { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -34,6 +34,9 @@ export default function CSVFileImport({url, title}: CSVFileImportProps) {
       const response = await axios({
         method: 'GET',
         url,
+        headers: {
+          Authorization: `Basic ${localStorage.getItem('authorization_token')}`
+        },
         params: {
           name: encodeURIComponent(file.name)
         }
